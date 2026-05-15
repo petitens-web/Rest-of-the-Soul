@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rest of the Souls</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+
+/* ── THEME VARIABLES ── */
+:root{
+  --pk50:#FBEAF0;--pk100:#F4C0D1;--pk200:#ED93B1;--pk400:#D4537E;--pk600:#993556;--pk800:#72243E;
+  --soft:#FDF6FA;--card:#FFFFFF;--tmain:#2d1b29;--tmuted:#7a5c6e;--bdr:rgba(212,83,126,0.18);
+  --grad-side:linear-gradient(175deg,#f4c0d1 0%,#f9d4e2 100%);
+  --grad-btn:linear-gradient(135deg,#D4537E,#E8789E);
+  --grad-fill:linear-gradient(90deg,#D4537E,#E8789E);
+  --accent:#D4537E;--accent-light:#F4C0D1;--accent-dark:#72243E;
+}
+/* Rose theme */
+body.theme-rose{
+  --pk50:#FFF0F3;--pk100:#FFD6DE;--pk200:#FFB3C1;--pk400:#E63C5C;--pk600:#B02040;--pk800:#7A0E28;
+  --soft:#FFF8F9;--bdr:rgba(230,60,92,0.18);--tmain:#2d0f18;--tmuted:#7a3040;
+  --grad-side:linear-gradient(175deg,#FFD6DE 0%,#FFB3C1 100%);
+  --grad-btn:linear-gradient(135deg,#E63C5C,#FF6B85);
+  --grad-fill:linear-gradient(90deg,#E63C5C,#FF6B85);
+  --accent:#E63C5C;--accent-light:#FFD6DE;--accent-dark:#7A0E28;
+}
+/* Blush theme */
+body.theme-blush{
+  --pk50:#FFF5F7;--pk100:#FFE0E8;--pk200:#FFBDD0;--pk400:#FF85A2;--pk600:#D45B7A;--pk800:#A33456;
+  --soft:#FFFAFE;--bdr:rgba(255,133,162,0.18);--tmain:#2d1520;--tmuted:#7a4055;
+  --grad-side:linear-gradient(175deg,#FFE0E8 0%,#FFC8D8 100%);
+  --grad-btn:linear-gradient(135deg,#FF85A2,#FFB0C4);
+  --grad-fill:linear-gradient(90deg,#FF85A2,#FFB0C4);
+  --accent:#FF85A2;--accent-light:#FFE0E8;--accent-dark:#A33456;
+}
+/* Mauve theme */
+body.theme-mauve{
+  --pk50:#F9F0F5;--pk100:#EDCFE0;--pk200:#D9A5C5;--pk400:#B05A8A;--pk600:#7E3562;--pk800:#521540;
+  --soft:#FCF7FA;--bdr:rgba(176,90,138,0.18);--tmain:#2a1022;--tmuted:#6e3555;
+  --grad-side:linear-gradient(175deg,#EDCFE0 0%,#D9B8CE 100%);
+  --grad-btn:linear-gradient(135deg,#B05A8A,#C77DAA);
+  --grad-fill:linear-gradient(90deg,#B05A8A,#C77DAA);
+  --accent:#B05A8A;--accent-light:#EDCFE0;--accent-dark:#521540;
+}
+/* Peach theme */
+body.theme-peach{
+  --pk50:#FFF5F0;--pk100:#FFDDCC;--pk200:#FFC4A8;--pk400:#E87050;--pk600:#B5461C;--pk800:#7A2800;
+  --soft:#FFFAF8;--bdr:rgba(232,112,80,0.18);--tmain:#2d1408;--tmuted:#7a3a25;
+  --grad-side:linear-gradient(175deg,#FFDDCC 0%,#FFC8B0 100%);
+  --grad-btn:linear-gradient(135deg,#E87050,#F29070);
+  --grad-fill:linear-gradient(90deg,#E87050,#F29070);
+  --accent:#E87050;--accent-light:#FFDDCC;--accent-dark:#7A2800;
+}
+/* Cherry theme */
+body.theme-cherry{
+  --pk50:#FFF0F0;--pk100:#FFD0D0;--pk200:#FFAAAA;--pk400:#CC3333;--pk600:#991111;--pk800:#660000;
+  --soft:#FFF8F8;--bdr:rgba(204,51,51,0.18);--tmain:#220000;--tmuted:#661515;
+  --grad-side:linear-gradient(175deg,#FFD0D0 0%,#FFBBBB 100%);
+  --grad-btn:linear-gradient(135deg,#CC3333,#E05555);
+  --grad-fill:linear-gradient(90deg,#CC3333,#E05555);
+  --accent:#CC3333;--accent-light:#FFD0D0;--accent-dark:#660000;
+}
+
+body{font-family:'Nunito',sans-serif;background:var(--soft);color:var(--tmain);min-height:100vh;transition:background 0.3s,color 0.3s;}
+.app{display:flex;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{width:228px;min-width:228px;background:var(--grad-side);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:background 0.3s;}
+.prof-sec{padding:18px 14px 14px;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;flex-direction:column;align-items:center;gap:9px;}
+.av-wrap{position:relative;width:68px;height:68px;cursor:pointer;}
+.av-ring{width:68px;height:68px;border-radius:50%;border:3px solid var(--accent);overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--accent-light);}
+.av-ring img{width:100%;height:100%;object-fit:cover;display:none;}
+.av-init{font-family:'DM Serif Display',serif;font-size:22px;color:var(--accent-dark);}
+.av-cam{position:absolute;bottom:0;right:0;width:20px;height:20px;border-radius:50%;background:var(--accent);border:2px solid #fff;display:flex;align-items:center;justify-content:center;}
+.av-cam i{font-size:10px;color:#fff;}
+.prof-name{font-family:'DM Serif Display',serif;font-size:15px;color:var(--pk800);text-align:center;}
+.prof-handle{font-size:11px;color:var(--pk600);text-align:center;}
+.mini-row{display:flex;gap:5px;margin-top:1px;}
+.mb{padding:4px 9px;border-radius:8px;font-size:11px;font-weight:600;border:1.5px solid var(--pk200);background:rgba(255,255,255,0.5);color:var(--pk800);cursor:pointer;display:flex;align-items:center;gap:3px;transition:all 0.2s;}
+.mb:hover{background:rgba(255,255,255,0.8);}
+.mb i{font-size:11px;}
+.nav-sc{flex:1;overflow-y:auto;padding:6px 0;}
+.ns{padding:12px 14px 4px;font-size:10px;font-weight:600;letter-spacing:0.1em;color:var(--pk600);text-transform:uppercase;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;margin:1px 6px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:500;color:var(--pk800);transition:all 0.2s;position:relative;}
+.ni:hover{background:rgba(255,255,255,0.5);}
+.ni.active{background:rgba(255,255,255,0.75);color:var(--pk600);}
+.ni i{font-size:16px;min-width:18px;}
+.nbadge{margin-left:auto;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:1px 5px;border-radius:9px;}
+.sb-ft{padding:10px 14px;border-top:1px solid rgba(0,0,0,0.08);}
+.bat-lbl{font-size:11px;color:var(--pk600);font-weight:600;margin-bottom:4px;}
+.bat-bar{height:7px;background:rgba(0,0,0,0.1);border-radius:20px;overflow:hidden;}
+.bat-fill{height:100%;border-radius:20px;background:var(--grad-fill);transition:width 0.4s;width:42%;}
+.bat-pct{font-size:11px;color:var(--pk600);font-weight:600;margin-top:2px;text-align:right;}
+.wm{text-align:center;padding:7px 0 3px;font-size:10px;color:var(--pk600);opacity:0.75;font-family:'DM Serif Display',serif;letter-spacing:0.02em;}
+.wm span{display:block;font-family:'Nunito',sans-serif;font-size:9px;color:var(--pk600);opacity:0.6;letter-spacing:0.06em;margin-top:1px;}
+
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;}
+.view{display:none;padding:24px 24px 40px;}
+.view.active{display:block;}
+.ph{margin-bottom:20px;display:flex;align-items:flex-start;justify-content:space-between;}
+.pt{font-family:'DM Serif Display',serif;font-size:25px;color:var(--pk800);}
+.ps{font-size:13px;color:var(--tmuted);margin-top:3px;}
+.card{background:var(--card);border-radius:16px;border:1px solid var(--bdr);padding:17px;margin-bottom:13px;transition:border-color 0.3s;}
+.ct{font-size:12px;font-weight:600;color:var(--pk600);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:11px;}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:13px;}
+.sc{background:var(--card);border-radius:14px;border:1px solid var(--bdr);padding:13px;text-align:center;}
+.sn{font-family:'DM Serif Display',serif;font-size:26px;color:var(--accent);}
+.sl{font-size:11px;color:var(--tmuted);margin-top:1px;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+.chip{padding:4px 11px;border-radius:20px;font-size:12px;font-weight:500;border:1.5px solid var(--pk200);background:var(--pk50);color:var(--pk600);}
+.erow{display:flex;align-items:flex-start;gap:11px;padding:12px 0;border-bottom:1px solid var(--bdr);}
+.erow:last-child{border-bottom:none;}
+.edate{min-width:42px;text-align:center;}
+.eday{font-family:'DM Serif Display',serif;font-size:20px;color:var(--accent);line-height:1;}
+.emon{font-size:10px;color:var(--tmuted);font-weight:600;letter-spacing:0.05em;}
+.ebody{flex:1;}
+.efeel{font-size:13px;color:var(--tmain);line-height:1.5;}
+.etag{display:inline-block;margin-top:4px;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;background:var(--pk50);color:var(--pk600);}
+.lbadge{font-size:11px;color:var(--tmuted);display:flex;align-items:center;gap:3px;margin-top:3px;}
+.fl{font-size:11px;font-weight:600;color:var(--pk600);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:5px;display:block;}
+.fh{font-size:12px;color:var(--tmuted);margin-bottom:5px;font-style:italic;}
+textarea,input[type=text],input[type=password]{width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--tmain);background:var(--pk50);resize:vertical;outline:none;transition:border-color 0.2s,background 0.3s;}
+textarea:focus,input[type=text]:focus,input[type=password]:focus{border-color:var(--accent);background:#fff;}
+.tso{display:flex;flex-wrap:wrap;gap:6px;margin-top:3px;}
+.to{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1.5px solid var(--bdr);cursor:pointer;transition:all 0.18s;background:var(--card);color:var(--tmuted);user-select:none;}
+.to.sel{background:var(--accent-light);color:var(--pk800);border-color:var(--accent);}
+.btn{padding:10px 22px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;transition:all 0.2s;}
+.btnp{background:var(--grad-btn);color:#fff;}
+.btnp:hover{opacity:0.9;transform:translateY(-1px);}
+.btng{background:transparent;border:1.5px solid var(--bdr);color:var(--tmuted);margin-left:7px;}
+.btng:hover{border-color:var(--pk200);color:var(--pk600);}
+.btnd{background:transparent;border:1.5px solid #f5c6cb;color:#c0392b;margin-left:7px;}
+.lksec{background:var(--pk50);border:1.5px dashed var(--pk200);border-radius:14px;padding:16px;text-align:center;}
+.lksec i{font-size:24px;color:var(--accent);margin-bottom:6px;display:block;}
+.lksec p{font-size:13px;color:var(--pk600);}
+.pal{background:var(--pk50);border:1.5px solid var(--pk200);border-radius:14px;padding:14px;display:flex;gap:11px;align-items:flex-start;margin-bottom:11px;}
+.pal i{font-size:19px;color:var(--accent);margin-top:1px;}
+.pt2 strong{font-size:13px;color:var(--pk800);display:block;margin-bottom:2px;}
+.pt2 span{font-size:12px;color:var(--tmuted);}
+.wbars{display:flex;align-items:flex-end;gap:4px;height:60px;}
+.rentry{border-left:3px solid var(--pk200);padding-left:14px;margin-bottom:16px;}
+.rdate{font-size:11px;color:var(--tmuted);font-weight:600;margin-bottom:3px;}
+.rinitial{font-size:13px;color:var(--tmain);margin-bottom:5px;font-style:italic;}
+.rconc{font-size:12px;color:var(--pk600);background:var(--pk50);border-radius:10px;padding:8px 12px;}
+.rconc strong{display:block;font-size:10px;color:var(--accent);margin-bottom:2px;letter-spacing:0.05em;text-transform:uppercase;}
+.rconcform{margin-top:8px;}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bdr);}
+.srow:last-child{border-bottom:none;}
+.sinfo strong{font-size:13px;color:var(--tmain);font-weight:500;}
+.sinfo p{font-size:11px;color:var(--tmuted);margin-top:1px;}
+.tog{width:38px;height:21px;background:var(--bdr);border-radius:11px;position:relative;cursor:pointer;transition:background 0.2s;}
+.tog.on{background:var(--grad-fill);}
+.tthumb{width:15px;height:15px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:left 0.2s;}
+.tog.on .tthumb{left:20px;}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:7px;}
+.cdh{text-align:center;font-size:10px;color:var(--tmuted);font-weight:600;padding:2px 0;}
+.cc{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;cursor:pointer;transition:transform 0.1s;}
+.cc:hover{transform:scale(1.1);}
+.prg-wrap{margin-bottom:11px;}
+.prg-lr{display:flex;justify-content:space-between;font-size:12px;color:var(--tmuted);margin-bottom:3px;}
+.prg-bar{height:7px;background:var(--pk50);border-radius:20px;overflow:hidden;}
+.prg-fill{height:100%;border-radius:20px;background:var(--grad-fill);}
+.empty-state{text-align:center;padding:32px 16px;color:var(--tmuted);}
+.empty-state i{font-size:36px;color:var(--pk200);display:block;margin-bottom:10px;}
+.empty-state p{font-size:13px;line-height:1.6;}
+.toast{position:fixed;bottom:18px;right:18px;background:var(--grad-btn);color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:500;display:none;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,0.15);}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--tmuted);padding:3px 7px;border-radius:6px;font-size:11px;display:flex;align-items:center;gap:3px;}
+.del-btn:hover{color:#c0392b;background:#FEF2F2;}
+input[type=file]{display:none;}
+
+/* ── PIN OVERLAY ── */
+.overlay{position:absolute;inset:0;background:rgba(253,246,250,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;min-height:600px;}
+.pin-card{background:#fff;border-radius:20px;border:1px solid var(--bdr);padding:28px 24px;width:290px;text-align:center;box-shadow:0 8px 32px rgba(212,83,126,0.12);}
+.pin-logo{font-family:'DM Serif Display',serif;font-size:19px;color:var(--pk800);margin-bottom:3px;}
+.pin-sub{font-size:12px;color:var(--tmuted);margin-bottom:18px;}
+.pdots{display:flex;gap:13px;justify-content:center;margin-bottom:18px;}
+.pd{width:13px;height:13px;border-radius:50%;border:2px solid var(--pk200);background:transparent;transition:all 0.15s;}
+.pd.filled{background:var(--accent);border-color:var(--accent);}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.pkey{padding:13px;border-radius:11px;border:1.5px solid var(--bdr);background:var(--pk50);font-size:17px;font-weight:600;color:var(--pk800);cursor:pointer;transition:all 0.15s;font-family:'DM Serif Display',serif;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.pkey:hover{background:var(--accent-light);border-color:var(--accent);}
+.pkey:active{transform:scale(0.95);}
+.pkey small{font-size:8px;font-family:'Nunito',sans-serif;font-weight:500;color:var(--pk600);letter-spacing:0.05em;margin-top:1px;}
+.perr{font-size:12px;color:#c0392b;height:15px;margin-bottom:5px;}
+.phint{font-size:11px;color:var(--tmuted);margin-top:11px;}
+
+/* ── PROFILE HERO ── */
+.pf-hero{display:flex;flex-direction:column;align-items:center;background:var(--pk50);border-radius:16px;border:1px solid var(--bdr);padding:24px 18px;margin-bottom:13px;}
+.big-av{width:86px;height:86px;border-radius:50%;border:4px solid var(--accent);overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--accent-light);margin-bottom:10px;cursor:pointer;position:relative;}
+.big-av img{width:100%;height:100%;object-fit:cover;display:none;}
+.big-init{font-family:'DM Serif Display',serif;font-size:30px;color:var(--pk800);}
+.big-cam{position:absolute;bottom:0;right:0;width:24px;height:24px;border-radius:50%;background:var(--accent);border:2px solid #fff;display:flex;align-items:center;justify-content:center;}
+.pf-name{font-family:'DM Serif Display',serif;font-size:21px;color:var(--pk800);}
+.pf-handle{font-size:12px;color:var(--pk600);margin-top:2px;}
+.pf-bio{font-size:13px;color:var(--tmuted);margin-top:7px;text-align:center;max-width:240px;line-height:1.5;}
+.pf-stats{display:flex;gap:22px;margin-top:14px;}
+.pfs{text-align:center;}
+.pfsn{font-family:'DM Serif Display',serif;font-size:19px;color:var(--accent);}
+.pfsl{font-size:10px;color:var(--tmuted);font-weight:600;}
+.pfr{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+
+/* ── THEME PICKER ── */
+.theme-picker{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.theme-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all 0.18s;position:relative;}
+.theme-swatch.active{border-color:var(--tmain);transform:scale(1.15);}
+.theme-swatch::after{content:'';position:absolute;inset:2px;border-radius:50%;border:2px solid rgba(255,255,255,0.6);}
+</style>
+</head>
+<body>
+<div style="position:relative;min-height:640px;" id="root">
+
+<!-- PIN -->
+<div class="overlay" id="pin-ov">
+  <div class="pin-card">
+    <div class="pin-logo">🌸 Rest of the Souls</div>
+    <div class="pin-sub" id="pin-lbl">Enter your PIN to unlock</div>
+    <div class="pdots" id="pdots">
+      <div class="pd" id="pd0"></div><div class="pd" id="pd1"></div>
+      <div class="pd" id="pd2"></div><div class="pd" id="pd3"></div>
+    </div>
+    <div class="perr" id="perr"></div>
+    <div class="pgrid">
+      <div class="pkey" onclick="pp('1')">1<small></small></div>
+      <div class="pkey" onclick="pp('2')">2<small>ABC</small></div>
+      <div class="pkey" onclick="pp('3')">3<small>DEF</small></div>
+      <div class="pkey" onclick="pp('4')">4<small>GHI</small></div>
+      <div class="pkey" onclick="pp('5')">5<small>JKL</small></div>
+      <div class="pkey" onclick="pp('6')">6<small>MNO</small></div>
+      <div class="pkey" onclick="pp('7')">7<small>PQRS</small></div>
+      <div class="pkey" onclick="pp('8')">8<small>TUV</small></div>
+      <div class="pkey" onclick="pp('9')">9<small>WXYZ</small></div>
+      <div class="pkey" onclick="pclear()" style="font-size:13px;font-family:'Nunito',sans-serif;"><i class="ti ti-refresh" style="font-size:15px"></i><small>Clear</small></div>
+      <div class="pkey" onclick="pp('0')">0</div>
+      <div class="pkey" onclick="pback()"><i class="ti ti-backspace" style="font-size:16px"></i><small>Del</small></div>
+    </div>
+    <div class="phint" id="phint">Default PIN: 1234</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="main-app" style="display:none;">
+  <nav class="sidebar">
+    <div class="prof-sec">
+      <div class="av-wrap" onclick="document.getElementById('av-up').click()">
+        <div class="av-ring" id="sb-av">
+          <img id="sb-img" src="" alt=""/>
+          <span class="av-init" id="sb-ini">A</span>
+        </div>
+        <div class="av-cam"><i class="ti ti-camera"></i></div>
+      </div>
+      <input type="file" id="av-up" accept="image/*" onchange="handleAv(this)"/>
+      <div style="text-align:center;">
+        <div class="prof-name" id="sb-name">Ada</div>
+        <div class="prof-handle" id="sb-handle">@ada.journal</div>
+      </div>
+      <div class="mini-row">
+        <div class="mb" onclick="sv('profile')"><i class="ti ti-user"></i> Profile</div>
+        <div class="mb" onclick="showPinSetup()"><i class="ti ti-lock"></i> PIN</div>
+      </div>
+    </div>
+    <div class="nav-sc">
+      <div class="ns">Main</div>
+      <div class="ni active" onclick="sv('dashboard')" id="nav-dashboard"><i class="ti ti-home"></i> Dashboard</div>
+      <div class="ni" onclick="sv('new-entry')" id="nav-new-entry"><i class="ti ti-pencil-plus"></i> New Entry</div>
+      <div class="ni" onclick="sv('patterns')" id="nav-patterns"><i class="ti ti-chart-bar"></i> Patterns</div>
+      <div class="ns">Reflect</div>
+      <div class="ni" onclick="sv('reflections')" id="nav-reflections"><i class="ti ti-heart"></i> Reflections</div>
+      <div class="ni" onclick="sv('calendar-view')" id="nav-calendar-view"><i class="ti ti-calendar"></i> Calendar</div>
+      <div class="ni" onclick="sv('notifications')" id="nav-notifications"><i class="ti ti-bell"></i> Notifications <span class="nbadge" id="notif-badge">0</span></div>
+      <div class="ns">Grow</div>
+      <div class="ni" onclick="sv('goals')" id="nav-goals"><i class="ti ti-target"></i> Goals</div>
+      <div class="ni" onclick="sv('insights')" id="nav-insights"><i class="ti ti-bulb"></i> Insights</div>
+      <div class="ni" onclick="sv('archive')" id="nav-archive"><i class="ti ti-archive"></i> Archive</div>
+      <div class="ns">Account</div>
+      <div class="ni" onclick="sv('profile')" id="nav-profile"><i class="ti ti-user-circle"></i> My Profile</div>
+      <div class="ni" onclick="sv('settings')" id="nav-settings"><i class="ti ti-settings"></i> Settings</div>
+      <div class="ni" onclick="lockApp()" style="color:#c0392b;"><i class="ti ti-lock"></i> Lock Journal</div>
+    </div>
+    <div class="sb-ft">
+      <div style="margin-bottom:7px;">
+        <div class="bat-lbl">🔋 Social Battery</div>
+        <div class="bat-bar"><div class="bat-fill" id="bat-fill"></div></div>
+        <div class="bat-pct" id="bat-pct">42%</div>
+      </div>
+      <div class="wm">made by ada wong<span>Rest of the Souls · v2.0</span></div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="view active" id="view-dashboard">
+      <div class="ph">
+        <div><div class="pt" id="dash-greet">Good day 🌸</div><div class="ps">Here's your emotional snapshot.</div></div>
+        <div class="mb" onclick="sv('new-entry')" style="padding:6px 13px;font-size:12px;"><i class="ti ti-plus" style="font-size:12px"></i> New Entry</div>
+      </div>
+      <div class="sg">
+        <div class="sc"><div class="sn" id="stat-total">0</div><div class="sl">Total entries</div></div>
+        <div class="sc"><div class="sn" id="stat-week">0</div><div class="sl">This week</div></div>
+        <div class="sc"><div class="sn" id="stat-streak">0</div><div class="sl">Day streak</div></div>
+      </div>
+      <div class="card"><div class="ct">Top mood tags</div><div class="chips" id="dash-tags"><span style="font-size:12px;color:var(--tmuted);">No entries yet — start journaling!</span></div></div>
+      <div class="card"><div class="ct">Recent entries</div><div id="dash-entries"><div class="empty-state"><i class="ti ti-notebook"></i><p>Your journal is empty.<br>Write your first entry to get started 🌸</p></div></div></div>
+    </div>
+
+    <!-- NEW ENTRY -->
+    <div class="view" id="view-new-entry">
+      <div class="ph"><div><div class="pt">Write a Letter ✍️</div><div class="ps">Be honest. No one else reads this right now.</div></div></div>
+      <div class="card">
+        <div style="margin-bottom:14px;"><label class="fl" for="f-feel">Today's feeling</label><div class="fh">Describe how you feel right now. Don't filter yourself.</div><textarea id="f-feel" rows="5" placeholder="e.g. I feel overwhelmed and don't really know why. Everything felt heavy today..."></textarea></div>
+        <div style="margin-bottom:14px;"><label class="fl">Mood tags</label><div class="tso" id="tag-opts">
+          <span class="to" onclick="tg(this)">😴 Introvert Burnout</span>
+          <span class="to" onclick="tg(this)">📚 Academic Stress</span>
+          <span class="to" onclick="tg(this)">😰 Social Anxiety</span>
+          <span class="to" onclick="tg(this)">😤 Irritable</span>
+          <span class="to" onclick="tg(this)">😌 Calm</span>
+          <span class="to" onclick="tg(this)">😔 Sad</span>
+          <span class="to" onclick="tg(this)">😊 Grateful</span>
+          <span class="to" onclick="tg(this)">🌀 Overwhelmed</span>
+          <span class="to" onclick="tg(this)">⚡ Energized</span>
+          <span class="to" onclick="tg(this)">😟 Lonely</span>
+        </div></div>
+        <div style="margin-bottom:14px;"><label class="fl">Social battery right now</label><input type="range" min="0" max="100" value="42" step="1" id="f-bat" oninput="updBat(this.value)"/><span id="bat-disp" style="font-size:12px;color:var(--tmuted);margin-top:3px;display:block;">42% — Running low</span></div>
+        <div style="margin-bottom:14px;"><label class="fl">In conclusion (locked 24h)</label><div class="lksec"><i class="ti ti-lock"></i><p>This will unlock <strong>24 hours</strong> after saving. 🌸</p></div></div>
+        <button class="btn btnp" onclick="saveEntry()">Save Entry</button>
+        <button class="btn btng" onclick="sv('dashboard')">Cancel</button>
+      </div>
+    </div>
+
+    <!-- PATTERNS -->
+    <div class="view" id="view-patterns">
+      <div class="ph"><div><div class="pt">Pattern Map 🗺️</div><div class="ps">Recurring emotional themes in your entries.</div></div></div>
+      <div id="patterns-alerts"></div>
+      <div class="card"><div class="ct">Mood frequency (last 7 days)</div><div class="wbars" id="week-bars"></div><div style="display:flex;gap:4px;margin-top:4px;justify-content:space-around;font-size:10px;color:var(--tmuted);" id="week-labels"></div></div>
+      <div class="card"><div class="ct">Most used emotion words</div><div class="chips" id="word-chips" style="margin-top:2px;"></div></div>
+    </div>
+
+    <!-- REFLECTIONS -->
+    <div class="view" id="view-reflections">
+      <div class="ph"><div><div class="pt">Reflections 💭</div><div class="ps">Add your "In Conclusion" to past entries.</div></div></div>
+      <div class="card" id="reflections-list"></div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="view" id="view-calendar-view">
+      <div class="ph"><div><div class="pt">Emotional Calendar 📅</div><div class="ps">A color-coded view of your entries.</div></div></div>
+      <div class="card"><div class="ct" id="cal-title">May 2025</div><div class="cal-g" id="cal-grid"></div><div style="display:flex;gap:11px;flex-wrap:wrap;font-size:11px;margin-top:11px;"><span><span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--pk200);margin-right:3px;"></span>Draining</span><span><span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--pk100);margin-right:3px;"></span>Calm</span><span><span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--pk400);margin-right:3px;"></span>Intense</span><span><span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:#FFE0B2;margin-right:3px;"></span>Irritable</span></div></div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="view" id="view-notifications">
+      <div class="ph"><div><div class="pt">Notifications 🔔</div><div class="ps">Pattern alerts and reminders.</div></div></div>
+      <div class="card" id="notif-list"></div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="view" id="view-goals">
+      <div class="ph"><div><div class="pt">Goals 🎯</div><div class="ps">Emotional growth milestones.</div></div></div>
+      <div class="card" id="goals-content"></div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div class="view" id="view-insights">
+      <div class="ph"><div><div class="pt">Insights 💡</div><div class="ps">What your data reveals about you.</div></div></div>
+      <div class="card" id="insights-content"></div>
+    </div>
+
+    <!-- ARCHIVE -->
+    <div class="view" id="view-archive">
+      <div class="ph"><div><div class="pt">Archive 🗂️</div><div class="ps">All your journal entries.</div></div></div>
+      <div class="card">
+        <div style="display:flex;gap:7px;margin-bottom:13px;"><input type="text" id="search-inp" placeholder="Search entries..." style="flex:1;padding:8px 11px;font-size:13px;" oninput="renderArchive()"/></div>
+        <div id="archive-list"></div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="view" id="view-profile">
+      <div class="ph"><div><div class="pt">My Profile 🌸</div><div class="ps">Your Rest of the Souls identity.</div></div></div>
+      <div class="pf-hero">
+        <div class="big-av" onclick="document.getElementById('av-up2').click()">
+          <img id="big-img" src="" alt=""/>
+          <span class="big-init" id="big-ini">A</span>
+          <div class="big-cam"><i class="ti ti-camera" style="font-size:11px;color:#fff"></i></div>
+        </div>
+        <input type="file" id="av-up2" accept="image/*" onchange="handleAv(this)"/>
+        <div class="pf-name" id="pf-name">Ada</div>
+        <div class="pf-handle" id="pf-handle">@ada.journal</div>
+        <div class="pf-bio" id="pf-bio">Introverted journaler learning to understand my own mind. 🌸</div>
+        <div class="pf-stats">
+          <div class="pfs"><div class="pfsn" id="pf-stat-total">0</div><div class="pfsl">Entries</div></div>
+          <div class="pfs"><div class="pfsn" id="pf-stat-ref">0</div><div class="pfsl">Reflections</div></div>
+          <div class="pfs"><div class="pfsn" id="pf-stat-streak">0</div><div class="pfsl">Streak</div></div>
+        </div>
+      </div>
+      <div class="card"><div class="ct">Edit Profile</div>
+        <div class="pfr">
+          <div style="margin-bottom:12px;"><label class="fl">Display name</label><input type="text" id="ed-name" value="Ada"/></div>
+          <div style="margin-bottom:12px;"><label class="fl">Handle</label><input type="text" id="ed-handle" value="@ada.journal"/></div>
+        </div>
+        <div style="margin-bottom:12px;"><label class="fl">Bio</label><textarea id="ed-bio" rows="2">Introverted journaler learning to understand my own mind. 🌸</textarea></div>
+        <button class="btn btnp" onclick="saveProfile()">Save Profile</button>
+      </div>
+      <div class="card"><div class="ct">Change PIN</div>
+        <div style="font-size:13px;color:var(--tmuted);margin-bottom:11px;line-height:1.6;">Set a 4-digit PIN to protect your journal.</div>
+        <button class="btn btnp" onclick="showPinSetup()"><i class="ti ti-lock" style="font-size:13px;vertical-align:-2px;margin-right:5px"></i>Change PIN</button>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="view" id="view-settings">
+      <div class="ph"><div><div class="pt">Settings ⚙️</div><div class="ps">Personalize your experience.</div></div></div>
+
+      <!-- THEME PICKER CARD -->
+      <div class="card">
+        <div class="ct">Pink Theme</div>
+        <p style="font-size:12px;color:var(--tmuted);margin-bottom:12px;line-height:1.6;">Choose your shade of pink — all themes stay within the pink palette.</p>
+        <div class="theme-picker" id="theme-picker">
+          <div class="theme-swatch active" data-theme="default" style="background:linear-gradient(135deg,#D4537E,#F4C0D1);" title="Default Pink" onclick="applyTheme('default',this)"></div>
+          <div class="theme-swatch" data-theme="rose" style="background:linear-gradient(135deg,#E63C5C,#FFB3C1);" title="Rose" onclick="applyTheme('rose',this)"></div>
+          <div class="theme-swatch" data-theme="blush" style="background:linear-gradient(135deg,#FF85A2,#FFE0E8);" title="Blush" onclick="applyTheme('blush',this)"></div>
+          <div class="theme-swatch" data-theme="mauve" style="background:linear-gradient(135deg,#B05A8A,#EDCFE0);" title="Mauve" onclick="applyTheme('mauve',this)"></div>
+          <div class="theme-swatch" data-theme="peach" style="background:linear-gradient(135deg,#E87050,#FFDDCC);" title="Peach" onclick="applyTheme('peach',this)"></div>
+          <div class="theme-swatch" data-theme="cherry" style="background:linear-gradient(135deg,#CC3333,#FFD0D0);" title="Cherry" onclick="applyTheme('cherry',this)"></div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;font-size:11px;color:var(--tmuted);">
+          <span>🌸 Default Pink</span><span>·</span><span>🌹 Rose</span><span>·</span>
+          <span>🩷 Blush</span><span>·</span><span>💜 Mauve</span><span>·</span>
+          <span>🍑 Peach</span><span>·</span><span>🍒 Cherry</span>
+        </div>
+      </div>
+
+      <div class="card"><div class="ct">Privacy & Security</div>
+        <div class="srow"><div class="sinfo"><strong>PIN protection</strong><p>Lock journal with a 4-digit PIN</p></div><div class="tog on" onclick="togSw(this)"><div class="tthumb"></div></div></div>
+        <div class="srow"><div class="sinfo"><strong>Entry encryption</strong><p>Encrypt entries locally</p></div><div class="tog" onclick="togSw(this)"><div class="tthumb"></div></div></div>
+      </div>
+      <div class="card"><div class="ct">Notifications</div>
+        <div class="srow"><div class="sinfo"><strong>Daily reminder</strong><p>Prompt to write your daily entry</p></div><div class="tog on" onclick="togSw(this)"><div class="tthumb"></div></div></div>
+        <div class="srow"><div class="sinfo"><strong>Pattern alerts</strong><p>Alert when a mood repeats 3+ times</p></div><div class="tog on" onclick="togSw(this)"><div class="tthumb"></div></div></div>
+        <div class="srow"><div class="sinfo"><strong>Reflection unlocked</strong><p>Alert when 24h lock expires</p></div><div class="tog" onclick="togSw(this)"><div class="tthumb"></div></div></div>
+      </div>
+      <div class="card"><div class="ct">Data</div>
+        <div class="srow"><div class="sinfo"><strong>Clear all entries</strong><p>Permanently delete your journal</p></div><button class="btn btnd" style="padding:6px 13px;font-size:12px;" onclick="clearAll()"><i class="ti ti-trash"></i> Clear</button></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+var pinBuf='',savedPin='1234',pinMode='unlock',pendingPin='';
+var entries=[],profile={name:'Ada',handle:'@ada.journal',bio:'Introverted journaler learning to understand my own mind. 🌸',avatar:''};
+var batVal=42,currentTheme='default';
+
+// ── STORAGE ──
+async function loadData(){
+  try{var er=await window.storage.get('rots-entries');if(er)entries=JSON.parse(er.value);}catch(e){entries=[];}
+  try{var pr=await window.storage.get('rots-profile');if(pr)profile=Object.assign(profile,JSON.parse(pr.value));}catch(e){}
+  try{var pinr=await window.storage.get('rots-pin');if(pinr)savedPin=pinr.value;}catch(e){}
+  try{var tr=await window.storage.get('rots-theme');if(tr){currentTheme=tr.value;var sw=document.querySelector('[data-theme="'+currentTheme+'"]');if(sw)applyTheme(currentTheme,sw,true);}}catch(e){}
+  applyProfile();
+}
+async function saveData(){try{await window.storage.set('rots-entries',JSON.stringify(entries));}catch(e){}}
+async function savePinData(){try{await window.storage.set('rots-pin',savedPin);}catch(e){}}
+async function saveProfileData(){try{await window.storage.set('rots-profile',JSON.stringify(profile));}catch(e){}}
+async function saveThemeData(){try{await window.storage.set('rots-theme',currentTheme);}catch(e){}}
+
+// ── THEME ──
+function applyTheme(name,el,silent){
+  document.body.className='';
+  if(name!=='default')document.body.classList.add('theme-'+name);
+  document.querySelectorAll('.theme-swatch').forEach(function(s){s.classList.remove('active');});
+  if(el)el.classList.add('active');
+  currentTheme=name;
+  if(!silent){saveThemeData();showToast('Theme updated! 🌸');}
+}
+
+// ── PROFILE ──
+function applyProfile(){
+  document.getElementById('sb-name').textContent=profile.name;
+  document.getElementById('sb-handle').textContent=profile.handle;
+  document.getElementById('sb-ini').textContent=profile.name.charAt(0).toUpperCase();
+  document.getElementById('big-ini').textContent=profile.name.charAt(0).toUpperCase();
+  document.getElementById('pf-name').textContent=profile.name;
+  document.getElementById('pf-handle').textContent=profile.handle;
+  document.getElementById('pf-bio').textContent=profile.bio;
+  document.getElementById('ed-name').value=profile.name;
+  document.getElementById('ed-handle').value=profile.handle;
+  document.getElementById('ed-bio').value=profile.bio;
+  if(profile.avatar){
+    ['sb-img','big-img'].forEach(function(id){var el=document.getElementById(id);el.src=profile.avatar;el.style.display='block';});
+    document.getElementById('sb-ini').style.display='none';
+    document.getElementById('big-ini').style.display='none';
+  }
+}
+
+// ── PIN ──
+function pp(d){if(pinBuf.length>=4)return;pinBuf+=d;updDots();if(pinBuf.length===4)setTimeout(checkPin,170);}
+function pback(){pinBuf=pinBuf.slice(0,-1);updDots();document.getElementById('perr').textContent='';}
+function pclear(){pinBuf='';updDots();document.getElementById('perr').textContent='';}
+function updDots(){for(var i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('filled',i<pinBuf.length);}
+function checkPin(){
+  if(pinMode==='unlock'){
+    if(pinBuf===savedPin){document.getElementById('pin-ov').style.display='none';document.getElementById('main-app').style.display='flex';renderDashboard();}
+    else{document.getElementById('perr').textContent='Incorrect PIN. Try again.';pinBuf='';updDots();}
+  }else if(pinMode==='set-new'){
+    pendingPin=pinBuf;pinBuf='';updDots();pinMode='confirm';
+    document.getElementById('pin-lbl').textContent='Confirm your new PIN';
+    document.getElementById('phint').textContent='Re-enter the same PIN';
+    document.getElementById('perr').textContent='';
+  }else if(pinMode==='confirm'){
+    if(pinBuf===pendingPin){savedPin=pinBuf;savePinData();pinBuf='';updDots();pinMode='unlock';document.getElementById('pin-ov').style.display='none';document.getElementById('main-app').style.display='flex';showToast('PIN updated! 🔒');}
+    else{document.getElementById('perr').textContent='PINs do not match. Try again.';pinBuf='';updDots();pinMode='set-new';document.getElementById('pin-lbl').textContent='Set a new PIN';document.getElementById('phint').textContent='Enter your desired 4-digit PIN';}
+  }
+}
+function showPinSetup(){pinBuf='';updDots();pinMode='set-new';document.getElementById('perr').textContent='';document.getElementById('pin-lbl').textContent='Set a new PIN';document.getElementById('phint').textContent='Enter your desired 4-digit PIN';document.getElementById('main-app').style.display='none';document.getElementById('pin-ov').style.display='flex';}
+function lockApp(){pinBuf='';updDots();pinMode='unlock';document.getElementById('perr').textContent='';document.getElementById('pin-lbl').textContent='Enter your PIN to unlock';document.getElementById('phint').textContent='Default PIN: 1234';document.getElementById('main-app').style.display='none';document.getElementById('pin-ov').style.display='flex';}
+
+// ── NAV ──
+function sv(id){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('active');});
+  var v=document.getElementById('view-'+id),n=document.getElementById('nav-'+id);
+  if(v)v.classList.add('active');if(n)n.classList.add('active');
+  if(id==='dashboard')renderDashboard();
+  if(id==='patterns')renderPatterns();
+  if(id==='reflections')renderReflections();
+  if(id==='calendar-view')renderCalendar();
+  if(id==='archive')renderArchive();
+  if(id==='notifications')renderNotifications();
+  if(id==='goals')renderGoals();
+  if(id==='insights')renderInsights();
+  if(id==='profile')renderProfileStats();
+}
+
+// ── HELPERS ──
+function fmtDate(ts){var d=new Date(ts),mon=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return{day:d.getDate(),mon:mon[d.getMonth()],full:mon[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()};}
+function moodColor(tags){if(!tags||!tags.length)return 'rgba(212,83,126,0.08)';var t=tags[0]||'';if(t.includes('calm')||t.includes('grateful'))return '#FFE4EE';if(t.includes('energi'))return '#FFD0DF';if(t.includes('irritab')||t.includes('overwhelm'))return '#FFE0B2';return 'var(--pk100)';}
+function calcStreak(){if(!entries.length)return 0;var unique=[...new Set(entries.map(function(e){return new Date(e.ts).toDateString();}))];var streak=0,d=new Date();while(unique.indexOf(d.toDateString())>=0){streak++;d.setDate(d.getDate()-1);}return streak;}
+
+function makeEntryRow(e,showDel){
+  var d=fmtDate(e.ts);
+  var tagsHtml=(e.tags||[]).slice(0,2).map(function(t){return '<span class="etag">'+t+'</span>';}).join(' ');
+  var locked=Date.now()-e.ts<86400000;
+  var lockHtml=locked?'<div class="lbadge"><i class="ti ti-lock" style="font-size:10px"></i> Reflection unlocks in '+Math.ceil((86400000-(Date.now()-e.ts))/3600000)+'h</div>':'';
+  var batHtml=e.battery!==undefined?'<div class="lbadge" style="color:var(--pk600)"><i class="ti ti-bolt" style="font-size:10px"></i> '+e.battery+'% battery</div>':'';
+  var delHtml=showDel?'<button class="del-btn" onclick="delEntry(\''+e.id+'\')"><i class="ti ti-trash" style="font-size:12px"></i></button>':'';
+  return '<div class="erow"><div class="edate"><div class="eday">'+d.day+'</div><div class="emon">'+d.mon+'</div></div><div class="ebody"><div class="efeel">&ldquo;'+e.feeling.slice(0,120)+(e.feeling.length>120?'…':'')+'&rdquo;</div>'+tagsHtml+batHtml+lockHtml+'</div>'+delHtml+'</div>';
+}
+
+// ── RENDERS ──
+function renderDashboard(){
+  var h=new Date().getHours();
+  document.getElementById('dash-greet').textContent=h<12?'Good morning 🌅':h<17?'Good afternoon ☀️':'Good evening 🌙';
+  var now=Date.now(),weekAgo=now-7*86400000,weekEntries=entries.filter(function(e){return e.ts>weekAgo;});
+  document.getElementById('stat-total').textContent=entries.length;
+  document.getElementById('stat-week').textContent=weekEntries.length;
+  document.getElementById('stat-streak').textContent=calcStreak();
+  var tagCount={};entries.forEach(function(e){(e.tags||[]).forEach(function(t){tagCount[t]=(tagCount[t]||0)+1;});});
+  var sorted=Object.keys(tagCount).sort(function(a,b){return tagCount[b]-tagCount[a];}).slice(0,6);
+  document.getElementById('dash-tags').innerHTML=sorted.length?sorted.map(function(t){return '<span class="chip">'+t+' ×'+tagCount[t]+'</span>';}).join(''):'<span style="font-size:12px;color:var(--tmuted);">No entries yet — start journaling!</span>';
+  var recent=entries.slice().sort(function(a,b){return b.ts-a.ts;}).slice(0,4);
+  document.getElementById('dash-entries').innerHTML=recent.length?recent.map(function(e){return makeEntryRow(e,false);}).join(''):'<div class="empty-state"><i class="ti ti-notebook"></i><p>Your journal is empty.<br>Write your first entry to get started 🌸</p></div>';
+}
+
+function renderPatterns(){
+  var tagCount={};entries.forEach(function(e){(e.tags||[]).forEach(function(t){tagCount[t]=(tagCount[t]||0)+1;});});
+  var patterns=Object.keys(tagCount).filter(function(t){return tagCount[t]>=2;}).sort(function(a,b){return tagCount[b]-tagCount[a];});
+  document.getElementById('patterns-alerts').innerHTML=patterns.length?patterns.slice(0,3).map(function(t){return '<div class="pal"><i class="ti ti-alert-triangle"></i><div class="pt2"><strong>'+t+' detected '+tagCount[t]+'×</strong><span>This is a recurring pattern in your recent entries.</span></div></div>';}).join(''):'<div class="pal"><i class="ti ti-info-circle" style="color:var(--pk400)"></i><div class="pt2"><strong>No patterns yet</strong><span>Write more entries and patterns will appear here.</span></div></div>';
+  var counts=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var ds=d.toDateString();counts.push(entries.filter(function(e){return new Date(e.ts).toDateString()===ds;}).length);}
+  var mx=Math.max.apply(null,counts)||1;
+  var shades=['var(--pk100)','var(--pk200)','var(--pk100)','var(--pk400)','var(--pk200)','var(--pk100)','var(--pk200)'];
+  document.getElementById('week-bars').innerHTML=counts.map(function(c,i){var h=Math.max(4,Math.round((c/mx)*56));return '<div style="display:flex;flex-direction:column;align-items:center;flex:1;"><div style="width:100%;height:'+h+'px;background:'+shades[i]+';border-radius:5px 5px 0 0;transition:height 0.4s;"></div></div>';}).join('');
+  var dayNames=[];for(var j=6;j>=0;j--){var dd=new Date();dd.setDate(dd.getDate()-j);dayNames.push(['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dd.getDay()]);}
+  document.getElementById('week-labels').innerHTML=dayNames.map(function(d){return '<span>'+d+'</span>';}).join('');
+  var wordCount={};entries.forEach(function(e){e.feeling.toLowerCase().replace(/[^a-z\s]/g,'').split(/\s+/).forEach(function(w){if(w.length>4&&!['that','this','with','have','just','been','from','they','then','than','when','will','your','what','were','there','about','would'].includes(w))wordCount[w]=(wordCount[w]||0)+1;});});
+  var topWords=Object.keys(wordCount).sort(function(a,b){return wordCount[b]-wordCount[a];}).slice(0,10);
+  document.getElementById('word-chips').innerHTML=topWords.length?topWords.map(function(w){return '<span class="chip">'+w+' ×'+wordCount[w]+'</span>';}).join(''):'<span style="font-size:12px;color:var(--tmuted);">Write more entries to see your word patterns.</span>';
+}
+
+function renderReflections(){
+  var el=document.getElementById('reflections-list');
+  var sorted=entries.slice().sort(function(a,b){return b.ts-a.ts;});
+  if(!sorted.length){el.innerHTML='<div class="empty-state"><i class="ti ti-heart"></i><p>No entries yet. Write your first entry to begin.</p></div>';return;}
+  el.innerHTML=sorted.map(function(e){
+    var d=fmtDate(e.ts);var locked=Date.now()-e.ts<86400000;
+    var concHtml=e.conclusion?'<div class="rconc"><strong>Your reflection</strong>'+e.conclusion+'</div>':locked?'<div class="lksec" style="text-align:left;padding:10px 12px;"><span style="font-size:12px;color:var(--pk600);">🔒 Unlocks in '+Math.ceil((86400000-(Date.now()-e.ts))/3600000)+'h</span></div>':'<div class="rconcform"><textarea id="rc-'+e.id+'" rows="2" placeholder="Now that time has passed, why do you think you felt this way?"></textarea><button class="btn btnp" style="margin-top:7px;padding:7px 16px;font-size:12px;" onclick="saveConclusion(\''+e.id+'\')">Add reflection</button></div>';
+    return '<div class="rentry"><div class="rdate">'+d.full+'</div><div class="rinitial">&ldquo;'+e.feeling.slice(0,150)+(e.feeling.length>150?'…':'')+'&rdquo;</div>'+concHtml+'</div>';
+  }).join('');
+}
+function saveConclusion(id){var inp=document.getElementById('rc-'+id);if(!inp||!inp.value.trim())return;var i=entries.findIndex(function(e){return e.id===id;});if(i>=0){entries[i].conclusion=inp.value.trim();saveData();renderReflections();showToast('Reflection saved 💭');}}
+
+function renderCalendar(){
+  var now=new Date();document.getElementById('cal-title').textContent=now.toLocaleString('default',{month:'long'})+' '+now.getFullYear();
+  var g=document.getElementById('cal-grid');g.innerHTML=['Su','Mo','Tu','We','Th','Fr','Sa'].map(function(d){return '<div class="cdh">'+d+'</div>';}).join('');
+  var first=new Date(now.getFullYear(),now.getMonth(),1).getDay();for(var i=0;i<first;i++)g.innerHTML+='<div></div>';
+  var dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  for(var d=1;d<=dim;d++){var date=new Date(now.getFullYear(),now.getMonth(),d);var ds=date.toDateString();var de=entries.filter(function(e){return new Date(e.ts).toDateString()===ds;});var bg=de.length?moodColor(de[0].tags):'rgba(212,83,126,0.06)';var isToday=ds===new Date().toDateString();g.innerHTML+='<div class="cc" style="background:'+bg+';'+(isToday?'outline:2px solid var(--accent);outline-offset:1px;':'')+'">'+d+'</div>';}
+}
+
+function renderArchive(){
+  var q=(document.getElementById('search-inp').value||'').toLowerCase();
+  var filtered=entries.filter(function(e){return !q||e.feeling.toLowerCase().includes(q)||(e.tags||[]).join(' ').toLowerCase().includes(q);});
+  var sorted=filtered.slice().sort(function(a,b){return b.ts-a.ts;});
+  var el=document.getElementById('archive-list');
+  el.innerHTML=sorted.length?sorted.map(function(e){return makeEntryRow(e,true);}).join(''):'<div class="empty-state"><i class="ti ti-archive"></i><p>'+(q?'No entries match your search.':'No entries yet.')+'</p></div>';
+}
+function delEntry(id){entries=entries.filter(function(e){return e.id!==id;});saveData();renderArchive();renderDashboard();showToast('Entry deleted.');}
+
+function renderNotifications(){
+  var notifs=[];var tagCount={};var weekAgo=Date.now()-7*86400000;
+  entries.filter(function(e){return e.ts>weekAgo;}).forEach(function(e){(e.tags||[]).forEach(function(t){tagCount[t]=(tagCount[t]||0)+1;});});
+  Object.keys(tagCount).filter(function(t){return tagCount[t]>=3;}).forEach(function(t){notifs.push({icon:'ti-alert-triangle',title:'Pattern: '+t,body:'You\'ve logged this '+tagCount[t]+' times this week.',time:'This week'});});
+  var unlocked=entries.filter(function(e){return !e.conclusion&&Date.now()-e.ts>=86400000;});
+  if(unlocked.length)notifs.push({icon:'ti-lock-open',title:'Reflection unlocked',body:unlocked.length+' entr'+(unlocked.length>1?'ies have':'y has')+' passed the 24h lock.',time:'Now'});
+  if(!entries.length)notifs.push({icon:'ti-pencil',title:'Start your journal',body:'Write your first entry to begin tracking your emotional patterns.',time:'Now'});
+  else if(!entries.some(function(e){return new Date(e.ts).toDateString()===new Date().toDateString();}))notifs.push({icon:'ti-pencil',title:'Daily reminder',body:"You haven't written today yet. How are you feeling?",time:'Today'});
+  document.getElementById('notif-badge').textContent=notifs.length;
+  var el=document.getElementById('notif-list');
+  el.innerHTML=notifs.length?notifs.map(function(n){return '<div style="display:flex;align-items:flex-start;gap:11px;padding:12px 0;border-bottom:1px solid var(--bdr);"><div style="width:34px;height:34px;border-radius:9px;background:var(--pk50);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="ti '+n.icon+'" style="font-size:16px;color:var(--accent);"></i></div><div style="flex:1;"><strong style="font-size:13px;color:var(--tmain);font-weight:500;">'+n.title+'</strong><p style="font-size:12px;color:var(--tmuted);margin-top:1px;">'+n.body+'</p></div><span style="font-size:11px;color:var(--tmuted);white-space:nowrap;">'+n.time+'</span></div>';}).join(''):'<div class="empty-state"><i class="ti ti-bell"></i><p>All caught up! No notifications right now.</p></div>';
+}
+
+function renderGoals(){
+  var total=entries.length,refDone=entries.filter(function(e){return e.conclusion;}).length,streak=calcStreak();
+  var tagCount={};entries.forEach(function(e){(e.tags||[]).forEach(function(t){tagCount[t]=(tagCount[t]||0)+1;});});
+  var patterns=Object.keys(tagCount).filter(function(t){return tagCount[t]>=2;}).length;
+  var goals=[{label:'Write 30 entries',val:Math.min(total,30),max:30},{label:'Complete 10 reflections',val:Math.min(refDone,10),max:10},{label:'7-day journaling streak',val:Math.min(streak,7),max:7},{label:'Identify 5 recurring patterns',val:Math.min(patterns,5),max:5}];
+  document.getElementById('goals-content').innerHTML=goals.map(function(g){var pct=Math.round((g.val/g.max)*100);return '<div class="prg-wrap"><div class="prg-lr"><span>'+g.label+'</span><span style="color:var(--accent);font-weight:600;">'+g.val+'/'+g.max+'</span></div><div class="prg-bar"><div class="prg-fill" style="width:'+pct+'%"></div></div></div>';}).join('');
+}
+
+function renderInsights(){
+  var el=document.getElementById('insights-content');
+  if(!entries.length){el.innerHTML='<div class="empty-state"><i class="ti ti-bulb"></i><p>Write some entries first — insights will appear here.</p></div>';return;}
+  var words=new Set();entries.forEach(function(e){e.feeling.toLowerCase().split(/\s+/).forEach(function(w){if(w.length>3)words.add(w);});});
+  var bats=entries.filter(function(e){return e.battery!==undefined;}).map(function(e){return e.battery;});
+  var avgBat=bats.length?Math.round(bats.reduce(function(a,b){return a+b;},0)/bats.length):null;
+  var tagCount={};entries.forEach(function(e){(e.tags||[]).forEach(function(t){tagCount[t]=(tagCount[t]||0)+1;});});
+  var topTag=Object.keys(tagCount).sort(function(a,b){return tagCount[b]-tagCount[a];})[0];
+  el.innerHTML='<div style="margin-bottom:16px;"><p style="font-size:13px;color:var(--tmuted);line-height:1.7;">You\'ve used <strong style="color:var(--pk600);">'+words.size+' unique words</strong> across '+entries.length+' entr'+(entries.length>1?'ies':'y')+'. The more you write, the richer your emotional vocabulary becomes.</p></div>'+(avgBat!==null?'<div style="margin-bottom:14px;padding:13px;background:var(--pk50);border-radius:12px;"><strong style="font-size:12px;color:var(--pk600);display:block;margin-bottom:3px;">Average social battery</strong><span style="font-size:22px;font-family:\'DM Serif Display\',serif;color:var(--accent);">'+avgBat+'%</span><p style="font-size:12px;color:var(--tmuted);margin-top:3px;">'+(avgBat<40?'Running on low. Prioritize alone time and rest.':avgBat<70?'Moderate energy. You\'re managing well.':'High energy! You\'re thriving.')+'</p></div>':'')+(topTag?'<div style="padding:13px;background:var(--pk50);border-radius:12px;"><strong style="font-size:12px;color:var(--pk600);display:block;margin-bottom:3px;">Most recurring mood</strong><span style="font-size:16px;color:var(--pk800);font-weight:500;">'+topTag+' ('+tagCount[topTag]+'×)</span><p style="font-size:12px;color:var(--tmuted);margin-top:3px;">This is your most frequent emotional state. Understanding it is the first step to managing it.</p></div>':'');
+}
+
+function renderProfileStats(){document.getElementById('pf-stat-total').textContent=entries.length;document.getElementById('pf-stat-ref').textContent=entries.filter(function(e){return e.conclusion;}).length;document.getElementById('pf-stat-streak').textContent=calcStreak();}
+
+// ── ENTRY ──
+function tg(el){el.classList.toggle('sel');}
+function updBat(v){v=Math.round(v);document.getElementById('bat-fill').style.width=v+'%';document.getElementById('bat-pct').textContent=v+'%';var lbl=['Critical','Very low','Running low','Moderate','Good','Fully charged!'];document.getElementById('bat-disp').textContent=v+'% — '+lbl[Math.min(Math.floor(v/17),5)];batVal=v;}
+function saveEntry(){var feel=document.getElementById('f-feel').value.trim();if(!feel){showToast('Write something first 🌸');return;}var tags=[];document.querySelectorAll('#tag-opts .to.sel').forEach(function(t){tags.push(t.textContent.trim());});entries.unshift({id:Date.now().toString(),ts:Date.now(),feeling:feel,tags:tags,battery:batVal,conclusion:''});saveData();document.getElementById('f-feel').value='';document.querySelectorAll('#tag-opts .to.sel').forEach(function(t){t.classList.remove('sel');});showToast('Entry saved! Reflection unlocks in 24h ✨');setTimeout(function(){sv('dashboard');},1400);}
+function saveProfile(){profile.name=document.getElementById('ed-name').value.trim()||'Ada';profile.handle=document.getElementById('ed-handle').value.trim()||'@ada.journal';profile.bio=document.getElementById('ed-bio').value.trim();saveProfileData();applyProfile();showToast('Profile saved!');}
+function handleAv(input){if(!input.files||!input.files[0])return;var r=new FileReader();r.onload=function(e){profile.avatar=e.target.result;saveProfileData();['sb-img','big-img'].forEach(function(id){var el=document.getElementById(id);el.src=e.target.result;el.style.display='block';});document.getElementById('sb-ini').style.display='none';document.getElementById('big-ini').style.display='none';};r.readAsDataURL(input.files[0]);}
+function togSw(el){el.classList.toggle('on');}
+function clearAll(){if(confirm('Delete all entries? This cannot be undone.')){entries=[];saveData();renderDashboard();showToast('All entries cleared.');}}
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},2200);}
+
+// ── INIT ──
+loadData().then(function(){document.getElementById('pin-ov').style.display='flex';});
+</script>
+</body>
+</html>
